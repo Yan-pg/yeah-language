@@ -1,4 +1,4 @@
-import { UnitsOrganism } from "../../orgnisms/UnitsOrganism";
+import { UnitsOrganism } from "../../organisms/UnitsOrganism";
 
 export function Units() {
   return (

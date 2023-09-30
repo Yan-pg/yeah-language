@@ -1,9 +1,15 @@
-import { Home } from "@/modules/home/ui/Home";
+import { HeaderTemplate, Units } from "@/modules/home/components";
 
 export default function HomePage() {
   return (
     <>
-      <Home />
+      <header>
+        <HeaderTemplate />
+      </header>
+
+      <main>
+        <Units />
+      </main>
     </>
   );
 }

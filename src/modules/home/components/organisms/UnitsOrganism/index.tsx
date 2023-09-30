@@ -3,10 +3,10 @@ import { UnitMolecule } from "../../molecules/UnitMolecule";
 
 export function UnitsOrganism() {
   return (
-    <div>
+    <section className="gap-4 space-y-5 my-10">
       {units.content.map((unit) => (
         <UnitMolecule unit={unit} key={unit.id} />
       ))}
-    </div>
+    </section>
   );
 }

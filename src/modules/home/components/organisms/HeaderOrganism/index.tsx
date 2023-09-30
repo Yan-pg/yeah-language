@@ -2,7 +2,7 @@ import { HeaderMoleculeNames } from "@/modules/home/components/molecules/HeaderM
 
 export function HeaderOrganism() {
   return (
-    <div className="max-w-5xl p-1 m-auto flex justify-between items-center h-12">
+    <div className="max-w-5xl p-1 m-auto flex justify-between items-center">
       <HeaderMoleculeNames />
     </div>
   );

@@ -1,4 +1,4 @@
-import { HeaderOrganism } from "../../orgnisms/HeaderOrganism";
+import { HeaderOrganism } from "../../organisms/HeaderOrganism";
 
 export function HeaderTemplate() {
   return (

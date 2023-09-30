@@ -11,8 +11,8 @@ export async function POST(req: Request) {
   const { unit } = await req.json();
 
   const prompt = `
-    Generate sentences in English on the subject below and return only js array of sentences: 
-      ${"verb to be"}
+    Generate 20 sentences in English on the subject below and return only js array of sentences: 
+      ${unit}
   `.trim();
 
   const response = await openai.chat.completions.create({
@@ -26,7 +26,7 @@ export async function POST(req: Request) {
     ],
   });
 
-  console.log(response.choices[0].message.content);
-
-  return NextResponse.json({ response });
+  return NextResponse.json({
+    response: JSON.parse(response.choices[0].message.content || ""),
+  });
 }
