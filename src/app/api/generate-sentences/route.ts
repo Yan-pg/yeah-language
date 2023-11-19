@@ -11,8 +11,16 @@ export async function POST(req: Request) {
   const { unit } = await req.json();
 
   const prompt = `
-    Generate 20 sentences in English on the subject below and return only js array of sentences: 
+    Generate 5 sentences in English on the subject below and return only json array of sentences: 
       ${unit}
+
+      A example: 
+      [
+        {
+          english: 'sentence in english',
+          portuguese: 'sentence in por'
+        }
+      ]
   `.trim();
 
   const response = await openai.chat.completions.create({
@@ -25,6 +33,8 @@ export async function POST(req: Request) {
       },
     ],
   });
+
+  console.log("yan", response);
 
   return NextResponse.json({
     response: JSON.parse(response.choices[0].message.content || ""),

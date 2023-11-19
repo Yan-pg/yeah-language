@@ -1,15 +1,6 @@
-import { HeaderTemplate, Units } from "@/modules/home/components";
+import { HomeTemplate } from "@/modules/home/templates";
+import units from "@/data/units.json";
 
 export default function HomePage() {
-  return (
-    <>
-      <header>
-        <HeaderTemplate />
-      </header>
-
-      <main>
-        <Units />
-      </main>
-    </>
-  );
+  return <HomeTemplate units={units.content} />;
 }
