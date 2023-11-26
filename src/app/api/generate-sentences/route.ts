@@ -34,8 +34,6 @@ export async function POST(req: Request) {
     ],
   });
 
-  console.log("yan", response);
-
   return NextResponse.json({
     response: JSON.parse(response.choices[0].message.content || ""),
   });
