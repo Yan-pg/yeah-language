@@ -9,15 +9,33 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      keyframes: {
+        "animation-pulse": {
+          "0%, 100%": { transform: "scale(1);" },
+          "50%": { transform: "scale(0.95);" },
+        },
+      },
+      animation: {
+        "pulse-click": "animation-pulse 0.5s linear",
+      },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
+
+      boxShadow: {
+        "button-primary": "0px 4px 0px 0px #489D26;",
+        "button-secondary": " 0px 2px 0px 0px #E1E1E1;",
+      },
     },
     colors: {
       ...colors,
+      "gray-primary": "#E1E1E1",
+      "gray-secondary": "#A6A6A6",
       "green-primary": "#58CC02",
+      "green-dark": "#35B023",
+      "green-secondary": "#42C62F",
       "purple-primary": "#CE82FF",
       units: {
         green: "#00CD9C",
