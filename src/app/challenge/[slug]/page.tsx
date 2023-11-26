@@ -1,5 +1,6 @@
-import { revertSlug, generateSlug } from "@/tools";
-import units from "@/data/units.json";
+import { Button } from "@/modules/share";
+import { ProgressBar } from "@/modules/share/components/ProgressBar";
+import { Tag } from "@/modules/share/components/Tag";
 
 interface ChallengePageProps {
   params: {
@@ -21,5 +22,17 @@ export default async function Challenge({ params }: ChallengePageProps) {
 
   // return <div>{sentences.response.join("")}</div>;
 
-  return <div>{slug}</div>;
+  return (
+    <div>
+      <ProgressBar progress={10} />
+
+      <div className="max-w-xs">
+        <Button variant="primary" disabled>
+          CHECK
+        </Button>
+
+        <Tag>I</Tag>
+      </div>
+    </div>
+  );
 }
