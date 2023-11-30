@@ -17,8 +17,11 @@ export async function POST(req: Request) {
       A example: 
       [
         {
+          id: uuid,
           english: 'sentence in english',
-          portuguese: 'sentence in por'
+          portuguese: 'sentence in portuguese',
+          randomEnglish: 'radom sentence in english',
+          randomPortuguese: 'radom sentence in portuguese',
         }
       ]
   `.trim();
@@ -33,7 +36,6 @@ export async function POST(req: Request) {
       },
     ],
   });
-
   return NextResponse.json({
     response: JSON.parse(response.choices[0].message.content || ""),
   });

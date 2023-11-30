@@ -1,13 +1,58 @@
-import { ReactNode } from "react";
+"use client";
 
-interface TagProps {
+import { Slot, Slottable } from "@radix-ui/react-slot";
+import { ReactNode } from "react";
+import { VariantProps, tv } from "tailwind-variants";
+
+const tag = tv({
+  slots: {
+    container: [
+      "w-fit rounded-2xl border-2 shadow-button-secondary",
+      "border-gray-primary",
+      "py-[0.88rem] px-[1.2rem] outline-1",
+    ],
+  },
+
+  variants: {
+    hasShadow: {
+      false: {
+        container: "shadow-none",
+      },
+    },
+    selected: {
+      true: {
+        container:
+          "bg-gray-primary text-gray-primary shadow-none pointer-events-none",
+      },
+    },
+  },
+
+  defaultVariants: {
+    hasShadow: true,
+    selected: false,
+  },
+});
+
+interface TagProps extends VariantProps<typeof tag> {
   children: ReactNode;
+  asChild?: boolean;
+  handleClick?: () => void;
 }
 
-export function Tag({ children }: TagProps) {
+export function Tag({
+  children,
+  asChild,
+  hasShadow,
+  selected,
+  handleClick,
+}: TagProps) {
+  const Component = asChild ? Slot : "button";
+
+  const { container } = tag({ hasShadow, selected });
+
   return (
-    <div className="w-fit rounded-2xl border-2 border-gray-primary shadow-button-secondary py-[0.88rem] px-[1.2rem]">
-      <span>{children}</span>
-    </div>
+    <Component className={container()} onClick={handleClick}>
+      <Slottable>{children}</Slottable>
+    </Component>
   );
 }

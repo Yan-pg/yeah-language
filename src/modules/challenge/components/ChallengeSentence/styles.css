@@ -1,0 +1,8 @@
+.animated-item {
+  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+.animated-item.move-up {
+  transform: translateY(-20px);
+  opacity: 0;
+}

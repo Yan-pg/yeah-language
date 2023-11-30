@@ -28,6 +28,10 @@ const config: Config = {
         "button-primary": "0px 4px 0px 0px #489D26;",
         "button-secondary": " 0px 2px 0px 0px #E1E1E1;",
       },
+
+      gridTemplateRows: {
+        challenge: "100px 1fr 136px;",
+      },
     },
     colors: {
       ...colors,
@@ -37,6 +41,9 @@ const config: Config = {
       "green-dark": "#35B023",
       "green-secondary": "#42C62F",
       "purple-primary": "#CE82FF",
+      blue: {
+        primary: "#1CB0F6",
+      },
       units: {
         green: "#00CD9C",
         "orange-ready": "#CC6302",
