@@ -3,7 +3,6 @@ import { Button } from "@/modules/share";
 import units from "@/data/units.json";
 import { generateSlug } from "@/tools";
 import { ChallengeSentence } from "@/modules/challenge/components/ChallengeSentence";
-import { Chat } from "@/modules/challenge/models";
 
 interface ChallengePageProps {
   params: {
