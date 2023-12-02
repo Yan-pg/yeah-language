@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-import { ReadAndWrite, RadomWords } from "../components/ChallengeSentence";
+import { ReadOrListen, RadomWords } from "../components/ReadOrListen";
 import { ProgressBar } from "../components/ProgressBar";
 import { Chat } from "../models";
 import { Footer, FooterVariant } from "../components/Footer";
@@ -72,7 +72,7 @@ export function ChallengeTemplate({ sentences }: ChallengeTemplateProps) {
       </div>
 
       <div className="max-w-5xl mx-auto mt-36">
-        <ReadAndWrite
+        <ReadOrListen
           chat={sentence}
           shouldCleanValues={shouldCleanValues}
           selectedSentence={handleSelectedSentence}

@@ -41,7 +41,7 @@ interface updateSelectedWordsProps {
   wordInstance: RadomWords;
 }
 
-export function ReadAndWrite({
+export function ReadOrListen({
   chat,
   shouldCleanValues,
   selectedSentence,
