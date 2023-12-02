@@ -7,10 +7,13 @@ import { Chat } from "../../models";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 interface ChallengeSentenceProps {
-  chat: Chat[];
+  chat: Chat;
+  shouldCleanValues: boolean;
+  selectedSentence: (sentence: string) => void;
+  speak: (text: string) => void;
 }
 
-interface RadomWords {
+export interface RadomWords {
   id: string;
   word: string;
 }
@@ -38,31 +41,31 @@ interface updateSelectedWordsProps {
   wordInstance: RadomWords;
 }
 
-export function ChallengeSentence({ chat }: ChallengeSentenceProps) {
+export function ReadAndWrite({
+  chat,
+  shouldCleanValues,
+  selectedSentence,
+  speak,
+}: ChallengeSentenceProps) {
   const [sentence, setSentence] = useState<Sentence>({} as Sentence);
-  const [sentences, setSentences] = useState<Chat[]>(chat);
   const [selectedWords, setSelectedWords] = useState<RadomWords[]>([]);
+  const fistRender = useRef(true);
   const wordsRefs = useRef<(HTMLDivElement | null)[]>([]);
   const wordsSelectedRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const containerSelectedRef = useRef<HTMLHRElement>(null);
+  const containerSelectedRef = useRef<HTMLHRElement | null>(null);
   const disabledWordsRef = useRef<(HTMLDivElement | null)[]>([]);
 
   function choiceSentence() {
-    let choiceSentence =
-      sentences?.[Math.floor(Math.random() * sentences?.length)];
-    const removeSentence = sentences?.filter(
-      (sentence) => sentence.id !== choiceSentence.id
+    const randomWords = generateRandomWords(
+      chat.randomPortuguese + " " + chat.portuguese
     );
 
-    const sentence = {
-      ...choiceSentence,
-      randomWords: generateRandomWords(
-        choiceSentence?.portuguese + " " + choiceSentence?.randomPortuguese
-      ),
+    const sentenceGenerated = {
+      ...chat,
+      randomWords,
     };
 
-    setSentences(removeSentence);
-    setSentence(sentence);
+    setSentence(sentenceGenerated);
   }
 
   function generateRandomWords(sentence: string): RadomWords[] {
@@ -73,11 +76,15 @@ export function ChallengeSentence({ chat }: ChallengeSentenceProps) {
       .sort(() => Math.random() - 0.5)
       .map((word) => {
         return {
-          id: Math.random().toString(36).substring(7),
+          id: crypto.randomUUID(),
           word,
         };
       });
     return words;
+  }
+
+  function generateSelectedWordsToSentences(values: RadomWords[]) {
+    return values.map((values) => values.word).join(" ");
   }
 
   function handleUnselectWord(id: string, index: number) {
@@ -85,7 +92,7 @@ export function ChallengeSentence({ chat }: ChallengeSentenceProps) {
       (element, index, array) => array.indexOf(element) === index && element
     );
 
-    const removeWord = selectedWords.filter((word) => word.id !== id);
+    const newSelectedWords = selectedWords.filter((word) => word.id !== id);
 
     const wordIndex = sentence.randomWords.findIndex((word) => {
       return word.id === id;
@@ -97,30 +104,27 @@ export function ChallengeSentence({ chat }: ChallengeSentenceProps) {
 
     if (!wordRef || !disabledWordRef || !wordSelectedRef) return;
 
-    const disabledWordRefPosition = disabledWordRef.getBoundingClientRect();
-    const wordSelectedRefPosition = wordSelectedRef.getBoundingClientRect();
+    wordRef.style.display = "block";
+    wordRef.style.transform = "translate(0px, 0px)";
 
-    const x = disabledWordRefPosition.x - wordSelectedRefPosition.x;
-    const y = disabledWordRefPosition.y - wordSelectedRefPosition.y;
-
-    const translate = `translate(${x}px, ${y}px)`;
-    wordSelectedRef.style.transform = translate;
-
-    setTimeout(() => {
-      wordRef.style.display = "block";
-      wordRef.style.transform = "translate(0px, 0px)";
-      setSelectedWords(removeWord);
-    }, 300);
+    const generateSentence = generateSelectedWordsToSentences(newSelectedWords);
+    setSelectedWords(newSelectedWords);
+    selectedSentence(generateSentence);
   }
 
   const updateSelectedWords = useCallback(
     ({ wordInstance, wordRef }: updateSelectedWordsProps) => {
+      const newSelectedWords = [...selectedWords, wordInstance];
+      const generateSentence =
+        generateSelectedWordsToSentences(newSelectedWords);
+
       setTimeout(() => {
         wordRef.style.display = "none";
-        setSelectedWords([...selectedWords, wordInstance]);
+        setSelectedWords(newSelectedWords);
+        selectedSentence(generateSentence);
       }, 300);
     },
-    [selectedWords]
+    [selectedSentence, selectedWords]
   );
 
   const addStart = useCallback(
@@ -146,11 +150,12 @@ export function ChallengeSentence({ chat }: ChallengeSentenceProps) {
 
       let transform = `translate(${x}px, ${y}px)`;
 
+      console.log("start", transform);
       wordRef.style.transform = transform;
 
       updateSelectedWords({ wordInstance, wordRef });
     },
-    [selectedWords]
+    [updateSelectedWords]
   );
 
   const addEnd = useCallback(
@@ -185,13 +190,17 @@ export function ChallengeSentence({ chat }: ChallengeSentenceProps) {
       const wordSelectedRef =
         wordsSelectedRefs.current[wordsSelectedRefs.current.length - 1];
 
+      console.log(containerSelectedRef.current, wordRef);
+
       if (!containerSelectedRef.current || !wordRef) return;
+
+      console.log("entrou aqui");
 
       const wordRefPosition = wordRef.getBoundingClientRect();
       const containerSelectedRefPosition =
         containerSelectedRef.current.getBoundingClientRect();
 
-      if (!wordSelectedRef) {
+      if (!selectedWords.length || !wordSelectedRef) {
         addStart({
           containerSelectedRefPosition,
           wordRef,
@@ -210,12 +219,32 @@ export function ChallengeSentence({ chat }: ChallengeSentenceProps) {
         wordSelectedRefPosition,
       });
     },
-    [addEnd, addStart]
+    [addEnd, addStart, selectedWords]
   );
 
   useEffect(() => {
-    choiceSentence();
-  }, []);
+    if (!fistRender.current) {
+      choiceSentence();
+      setSelectedWords([]);
+      return;
+    }
+
+    fistRender.current = false;
+  }, [chat]);
+
+  useEffect(() => {
+    if (!shouldCleanValues) return;
+
+    console.log("clean");
+
+    setSelectedWords([]);
+    setSentence({} as Sentence);
+    wordsRefs.current = [];
+    wordsSelectedRefs.current = [];
+    disabledWordsRef.current = [];
+
+    console.log(wordsRefs.current);
+  }, [shouldCleanValues]);
 
   return (
     <div className="min-h-full h-full w-full flex items-center justify-center flex-1">
@@ -230,7 +259,10 @@ export function ChallengeSentence({ chat }: ChallengeSentenceProps) {
             <div>
               <Tag asChild hasShadow={false}>
                 <div className="flex items-center gap-2">
-                  <button className="text-blue-primary focus:text-gray-600">
+                  <button
+                    onClick={() => speak(sentence.english)}
+                    className="text-blue-primary focus:text-gray-600"
+                  >
                     <SpeakerSimpleHigh size={32} weight="fill" />
                   </button>
 
@@ -249,7 +281,12 @@ export function ChallengeSentence({ chat }: ChallengeSentenceProps) {
               <div
                 key={selected.id}
                 className="transition-all duration-400"
-                ref={(element) => wordsSelectedRefs.current.push(element)}
+                ref={(element) => {
+                  if (!element || wordsRefs.current.includes(element)) {
+                    return;
+                  }
+                  wordsSelectedRefs.current.push(element);
+                }}
                 onClick={() => handleUnselectWord(selected.id, index)}
               >
                 <Tag>{selected.word}</Tag>
@@ -261,40 +298,60 @@ export function ChallengeSentence({ chat }: ChallengeSentenceProps) {
         <hr className="border-2 mt-1" ref={containerSelectedRef} />
 
         <div className="flex flex-wrap mt-7 gap-2">
-          {sentence?.randomWords?.map((radom, index) => {
-            return (
-              <div key={radom.id} className="relative">
-                <div
-                  ref={(element) => wordsRefs.current.push(element)}
-                  id={radom.id}
-                  draggable={true}
-                  className="transition-all duration-400 ease-out"
-                >
-                  <Tag handleClick={() => handleSelectedWord(radom, index)}>
-                    {radom.word}
-                  </Tag>
-                </div>
+          {sentence &&
+            sentence?.randomWords?.map((radom, index) => {
+              return (
+                <div key={radom.id} className="relative">
+                  <div
+                    ref={(element) => {
+                      console.log(element);
 
-                <div
-                  data-disabled={
-                    !!selectedWords.filter((word) => word.id === radom.id)
-                      .length
-                  }
-                  ref={(element) => disabledWordsRef.current.push(element)}
-                  className="transition-all hidden opacity-0 data-[disabled=true]:block data-[disabled=true]:opacity-100 duration-400"
-                >
-                  <Tag
-                    selected={
+                      if (!element || wordsRefs.current.includes(element)) {
+                        return;
+                      }
+
+                      wordsRefs.current.push(element);
+                    }}
+                    id={radom.id}
+                    draggable={true}
+                    className="transition-all duration-400 ease-out"
+                  >
+                    <Tag handleClick={() => handleSelectedWord(radom, index)}>
+                      {radom.word}
+                    </Tag>
+                  </div>
+
+                  <div
+                    data-disabled={
                       !!selectedWords.filter((word) => word.id === radom.id)
                         .length
                     }
+                    ref={(element) => {
+                      const verifyElementAlreadyExists =
+                        disabledWordsRef.current.filter(
+                          (wordElement) =>
+                            wordElement?.innerHTML === element?.innerHTML
+                        ).length;
+
+                      if (!element || verifyElementAlreadyExists) {
+                        return;
+                      }
+                      disabledWordsRef.current.push(element);
+                    }}
+                    className="transition-all hidden opacity-0 data-[disabled=true]:block data-[disabled=true]:opacity-100 duration-400"
                   >
-                    {radom.word}
-                  </Tag>
+                    <Tag
+                      selected={
+                        !!selectedWords.filter((word) => word.id === radom.id)
+                          .length
+                      }
+                    >
+                      {radom.word}
+                    </Tag>
+                  </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
         </div>
       </div>
     </div>

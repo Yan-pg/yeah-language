@@ -16,6 +16,10 @@ const button = tv({
         "text-gray-secondary font-bold text-sm",
         "active:animate-pulse-click",
       ],
+      error: [
+        "bg-error-button text-white hover:bg-red-dark focus:bg-red-dark",
+        "shadow-button-error font-bold active:animate-pulse-click",
+      ],
     },
     disabled: {
       true: [

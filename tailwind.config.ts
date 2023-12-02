@@ -27,6 +27,7 @@ const config: Config = {
       boxShadow: {
         "button-primary": "0px 4px 0px 0px #489D26;",
         "button-secondary": " 0px 2px 0px 0px #E1E1E1;",
+        "button-error": "0px 4px 0px 0px #EE282D;",
       },
 
       gridTemplateRows: {
@@ -41,6 +42,10 @@ const config: Config = {
       "green-dark": "#35B023",
       "green-secondary": "#42C62F",
       "purple-primary": "#CE82FF",
+      "red-light": "#FFDADC",
+      "red-dark": "#EE282D",
+      "error-button": "#FF4347",
+      success: "#D7FFB8",
       blue: {
         primary: "#1CB0F6",
       },
