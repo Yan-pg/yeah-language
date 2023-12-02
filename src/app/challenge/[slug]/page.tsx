@@ -2,7 +2,7 @@ import { ProgressBar } from "@/modules/challenge/components/ProgressBar";
 import { Button } from "@/modules/share";
 import units from "@/data/units.json";
 import { generateSlug } from "@/tools";
-import { ChallengeSentence } from "@/modules/challenge/components/ReadOrListen";
+// import { ChallengeSentence } from "@/modules/challenge/components/ReadOrListen";
 import { ChallengeTemplate } from "@/modules/challenge/templete";
 
 interface ChallengePageProps {

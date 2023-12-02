@@ -3,9 +3,10 @@ import { XCircle } from "@phosphor-icons/react/dist/ssr";
 
 interface ErrorProps {
   correctSolution: string;
+  handleNextSentence: () => void;
 }
 
-export function Error({ correctSolution }: ErrorProps) {
+export function Error({ correctSolution, handleNextSentence }: ErrorProps) {
   return (
     <div className="max-w-5xl w-full mx-auto flex justify-between items-center h-full">
       <div className="flex items-center gap-3">
@@ -21,7 +22,9 @@ export function Error({ correctSolution }: ErrorProps) {
       </div>
 
       <div className="w-36">
-        <Button variant="error">Continue</Button>
+        <Button variant="error" onClick={handleNextSentence}>
+          Continue
+        </Button>
       </div>
     </div>
   );

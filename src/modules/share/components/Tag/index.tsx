@@ -25,6 +25,11 @@ const tag = tv({
           "bg-gray-primary text-gray-primary shadow-none pointer-events-none",
       },
     },
+    isBlue: {
+      true: {
+        container: "bg-blue-primary text-white rounded-3xl shadow-tag-blue",
+      },
+    },
   },
 
   defaultVariants: {
@@ -44,11 +49,12 @@ export function Tag({
   asChild,
   hasShadow,
   selected,
+  isBlue,
   handleClick,
 }: TagProps) {
   const Component = asChild ? Slot : "button";
 
-  const { container } = tag({ hasShadow, selected });
+  const { container } = tag({ hasShadow, selected, isBlue });
 
   return (
     <Component className={container()} onClick={handleClick}>

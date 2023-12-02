@@ -5,12 +5,14 @@ import { Tag } from "@/modules/share/components/Tag";
 import { SpeakerSimpleHigh } from "@phosphor-icons/react/dist/ssr";
 import { Chat } from "../../models";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { ChallengeType } from "../../templete";
 
 interface ChallengeSentenceProps {
   chat: Chat;
   shouldCleanValues: boolean;
+  challengeType: ChallengeType;
   selectedSentence: (sentence: string) => void;
-  speak: (text: string) => void;
+  speak: (text: string, rate?: number) => void;
 }
 
 export interface RadomWords {
@@ -44,6 +46,7 @@ interface updateSelectedWordsProps {
 export function ReadOrListen({
   chat,
   shouldCleanValues,
+  challengeType,
   selectedSentence,
   speak,
 }: ChallengeSentenceProps) {
@@ -55,9 +58,28 @@ export function ReadOrListen({
   const containerSelectedRef = useRef<HTMLHRElement | null>(null);
   const disabledWordsRef = useRef<(HTMLDivElement | null)[]>([]);
 
+  let title =
+    challengeType === ChallengeType.WRITE
+      ? "Write this in English"
+      : "Tap what you hear";
+
   function choiceSentence() {
+    if (challengeType === ChallengeType.WRITE) {
+      const randomWords = generateRandomWords(
+        chat.randomPortuguese + " " + chat.portuguese
+      );
+
+      const sentenceGenerated = {
+        ...chat,
+        randomWords,
+      };
+
+      setSentence(sentenceGenerated);
+      return;
+    }
+
     const randomWords = generateRandomWords(
-      chat.randomPortuguese + " " + chat.portuguese
+      chat.randomEnglish + " " + chat.english
     );
 
     const sentenceGenerated = {
@@ -87,7 +109,15 @@ export function ReadOrListen({
     return values.map((values) => values.word).join(" ");
   }
 
-  function handleUnselectWord(id: string, index: number) {
+  function handleUnselectWord(
+    id: string,
+    index: number,
+    wordInstance: RadomWords
+  ) {
+    if (challengeType === ChallengeType.LISTEN) {
+      speak(wordInstance.word.toLocaleLowerCase(), 0.5);
+    }
+
     const filterSelectedRefs = wordsSelectedRefs.current.filter(
       (element, index, array) => array.indexOf(element) === index && element
     );
@@ -110,6 +140,16 @@ export function ReadOrListen({
     const generateSentence = generateSelectedWordsToSentences(newSelectedWords);
     setSelectedWords(newSelectedWords);
     selectedSentence(generateSentence);
+  }
+
+  function speakWordByWord() {
+    const words = sentence.english.split(" ");
+
+    words.forEach((word, index) => {
+      setTimeout(() => {
+        speak(word.toLocaleLowerCase(), 0.1);
+      }, 1000 * index);
+    });
   }
 
   const updateSelectedWords = useCallback(
@@ -186,15 +226,15 @@ export function ReadOrListen({
 
   const handleSelectedWord = useCallback(
     (wordInstance: RadomWords, index: number) => {
+      if (challengeType === ChallengeType.LISTEN) {
+        speak(wordInstance.word.toLocaleLowerCase(), 0.5);
+      }
+
       const wordRef = wordsRefs.current[index];
       const wordSelectedRef =
         wordsSelectedRefs.current[wordsSelectedRefs.current.length - 1];
 
-      console.log(containerSelectedRef.current, wordRef);
-
       if (!containerSelectedRef.current || !wordRef) return;
-
-      console.log("entrou aqui");
 
       const wordRefPosition = wordRef.getBoundingClientRect();
       const containerSelectedRefPosition =
@@ -219,59 +259,82 @@ export function ReadOrListen({
         wordSelectedRefPosition,
       });
     },
-    [addEnd, addStart, selectedWords]
+    [addEnd, addStart, challengeType, selectedWords, speak]
   );
 
   useEffect(() => {
     if (!fistRender.current) {
+      console.log({ chat, challengeType, speak });
+
       choiceSentence();
-      setSelectedWords([]);
+
       return;
     }
 
     fistRender.current = false;
-  }, [chat]);
+  }, [challengeType, chat]);
 
   useEffect(() => {
     if (!shouldCleanValues) return;
-
-    console.log("clean");
 
     setSelectedWords([]);
     setSentence({} as Sentence);
     wordsRefs.current = [];
     wordsSelectedRefs.current = [];
     disabledWordsRef.current = [];
-
-    console.log(wordsRefs.current);
   }, [shouldCleanValues]);
 
   return (
     <div className="min-h-full h-full w-full flex items-center justify-center flex-1">
       <div className="w-full max-w-xl">
         <div>
-          <h1 className="text-3xl font-bold text-[#3C3C3C] line">
-            Write this in English
-          </h1>
+          <h1 className="text-3xl font-bold text-[#3C3C3C] line">{title} </h1>
 
-          <div className="flex items-center gap-2">
-            <Image src="/ana.png" alt="Ana piture" height={169} width={114} />
-            <div>
-              <Tag asChild hasShadow={false}>
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => speak(sentence.english)}
-                    className="text-blue-primary focus:text-gray-600"
-                  >
-                    <SpeakerSimpleHigh size={32} weight="fill" />
-                  </button>
+          {challengeType === ChallengeType.WRITE ? (
+            <div className="flex items-center gap-2">
+              <Image src="/ana.png" alt="Ana piture" height={169} width={114} />
+              <div>
+                <Tag asChild hasShadow={false}>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => speak(sentence.english)}
+                      className="text-blue-primary focus:text-gray-600"
+                    >
+                      <SpeakerSimpleHigh size={32} weight="fill" />
+                    </button>
 
-                  <span>{sentence.english}</span>
-                </div>
-              </Tag>
+                    <span>{sentence.english}</span>
+                  </div>
+                </Tag>
+              </div>
             </div>
-          </div>
+          ) : (
+            <div className="flex justify-center items-end gap-4 mt-6">
+              <div>
+                <Tag asChild isBlue>
+                  <button
+                    className="text-7xl text-white"
+                    onClick={() => speak(sentence.english, 0.8)}
+                  >
+                    <SpeakerSimpleHigh weight="fill" />
+                  </button>
+                </Tag>
+              </div>
 
+              <div>
+                <Tag asChild isBlue>
+                  <button onClick={speakWordByWord}>
+                    <Image
+                      src="/turtle.svg"
+                      alt="Turle picture"
+                      height={42}
+                      width={42}
+                    />
+                  </button>
+                </Tag>
+              </div>
+            </div>
+          )}
           <hr className="border-2" />
         </div>
 
@@ -287,7 +350,7 @@ export function ReadOrListen({
                   }
                   wordsSelectedRefs.current.push(element);
                 }}
-                onClick={() => handleUnselectWord(selected.id, index)}
+                onClick={() => handleUnselectWord(selected.id, index, selected)}
               >
                 <Tag>{selected.word}</Tag>
               </div>
@@ -304,8 +367,6 @@ export function ReadOrListen({
                 <div key={radom.id} className="relative">
                   <div
                     ref={(element) => {
-                      console.log(element);
-
                       if (!element || wordsRefs.current.includes(element)) {
                         return;
                       }
