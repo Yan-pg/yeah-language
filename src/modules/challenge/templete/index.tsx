@@ -249,8 +249,8 @@ export function ChallengeTemplate({
 
         <ProgressBar progress={barPercent} />
 
-        <div className="flex items-center gap-1">
-          <div className="hidden md:block">
+        <div className="items-center gap-1 ">
+          <div className="hidden md:flex md:items-center">
             <Image
               data-error={errorsSentences === 0}
               className="data-[error=true]:opacity-0 data-[error=true]:translate-y-10 transition-all duration-1000 ease-in-out"
@@ -277,7 +277,7 @@ export function ChallengeTemplate({
             />
           </div>
 
-          <div>
+          <div className="md:hidden flex items-center gap-1">
             <Image
               data-error={errorsSentences === 0}
               src="/heart.svg"
@@ -285,9 +285,8 @@ export function ChallengeTemplate({
               width={32}
               height={32}
             />
+            <span className="text-red-dark">{errorsSentences}</span>
           </div>
-
-          <span className="text-red-dark">{errorsSentences}</span>
         </div>
       </div>
 

@@ -27,7 +27,8 @@ const tag = tv({
     },
     isBlue: {
       true: {
-        container: "bg-blue-primary text-white rounded-3xl shadow-tag-blue",
+        container:
+          "bg-blue-primary text-white rounded-3xl shadow-tag-blue border-none",
       },
     },
   },

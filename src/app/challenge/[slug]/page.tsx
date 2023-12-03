@@ -19,23 +19,29 @@ export default function Challenge() {
   const [sentences, setSentences] = useState<Chat[]>([]);
 
   useEffect(() => {
-    console.log(params);
-
     const { slug } = params;
 
     const unit = units.content.find(
       (unit) => generateSlug(unit.title) === slug
     );
 
-    fetch(`https://yeah-language.vercel.app/api/generate-sentences`, {
+    fetch(`${process.env.NEXT_PUBLIC_API_HOST}/generate-sentences`, {
       method: "POST",
       body: JSON.stringify({ unit: unit?.contents }),
     })
       .then((response) => response.json())
-      .then(({ response }) => setSentences(response));
+      .then(({ response }) => {
+        setSentences(response);
+      });
   }, []);
 
   return (
-    <>{sentences.length > 0 && <ChallengeTemplate sentences={sentences} />}</>
+    <>
+      {sentences.length > 0 ? (
+        <ChallengeTemplate sentences={sentences} />
+      ) : (
+        <span>loading...</span>
+      )}
+    </>
   );
 }
