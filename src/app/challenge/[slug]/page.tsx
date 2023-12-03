@@ -17,6 +17,7 @@ interface ChallengePageProps {
 export default function Challenge() {
   const params = useParams();
   const [sentences, setSentences] = useState<Chat[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const { slug } = params;
@@ -32,12 +33,17 @@ export default function Challenge() {
       .then((response) => response.json())
       .then(({ response }) => {
         setSentences(response);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
       });
   }, []);
 
   return (
     <>
-      {sentences.length > 0 ? (
+      {!loading ? (
         <ChallengeTemplate sentences={sentences} />
       ) : (
         <span>loading...</span>
