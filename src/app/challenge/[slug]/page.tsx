@@ -15,14 +15,11 @@ export default async function Challenge({ params }: ChallengePageProps) {
 
   const unit = units.content.find((unit) => generateSlug(unit.title) === slug);
 
-  const response = await fetch(
-    `${process.env.API_HOST}/api/generate-sentences`,
-    {
-      method: "POST",
-      body: JSON.stringify({ unit: unit?.contents }),
-      cache: "no-store",
-    }
-  );
+  const response = await fetch(`${process.env.API_HOST}/generate-sentences`, {
+    method: "POST",
+    body: JSON.stringify({ unit: unit?.contents }),
+    cache: "no-store",
+  });
 
   const sentences = await response.json();
 
