@@ -15,11 +15,9 @@ export default async function Challenge({ params }: ChallengePageProps) {
 
   const unit = units.content.find((unit) => generateSlug(unit.title) === slug);
 
-  console.log(`${process.env.API_HOST}/generate-sentences`);
   const response = await fetch(`${process.env.API_HOST}/generate-sentences`, {
     method: "POST",
     body: JSON.stringify({ unit: unit?.contents }),
-    cache: "no-store",
   });
 
   const sentences = await response.json();
