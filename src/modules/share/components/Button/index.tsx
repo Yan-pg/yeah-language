@@ -2,7 +2,7 @@ import { ButtonHTMLAttributes } from "react";
 import { VariantProps, tv } from "tailwind-variants";
 
 const button = tv({
-  base: "w-full h-11 text-sm transition-all rounded-2xl",
+  base: "w-full h-11 text-base transition-all rounded-2xl",
 
   variants: {
     variant: {
@@ -20,6 +20,13 @@ const button = tv({
         "bg-error-button text-white hover:bg-red-dark focus:bg-red-dark",
         "shadow-button-error font-bold active:animate-pulse-click",
       ],
+      blue: [
+        "bg-blue-primary text-white hover:bg-blue-dark focus:bg-blue-dark",
+        "shadow-tag-blue font-bold active:animate-pulse-click",
+      ],
+    },
+    typeButton: {
+      outline: "w-full font-bold active:animate-pulse-click",
     },
     disabled: {
       true: [
@@ -32,18 +39,32 @@ const button = tv({
   defaultVariants: {
     variant: "primary",
   },
+
+  compoundVariants: [
+    {
+      variant: "error",
+      typeButton: "outline",
+      class:
+        "bg-transparent border-none shadow-none text-error-button w-fit hover:bg-transparent focus:bg-transparent",
+    },
+  ],
 });
 
 interface ButtonProps
   extends ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof button> {}
 
-export function Button({ variant, disabled, ...props }: ButtonProps) {
+export function Button({
+  variant,
+  disabled,
+  typeButton,
+  ...props
+}: ButtonProps) {
   return (
     <button
       {...props}
       disabled={disabled}
-      className={button({ variant, disabled })}
+      className={button({ variant, disabled, typeButton })}
     />
   );
 }

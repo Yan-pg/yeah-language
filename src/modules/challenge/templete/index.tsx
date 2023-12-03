@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
 import { ReadOrListen } from "../components/ReadOrListen";
 import { ProgressBar } from "../components/ProgressBar";
@@ -8,6 +9,8 @@ import { Chat } from "../models";
 import { Footer, FooterVariant } from "../components/Footer";
 import { SpeakChallenge } from "../components/SpeakChallange";
 import { useRouter } from "next/navigation";
+import { X } from "@phosphor-icons/react/dist/ssr";
+import { Button, Modal } from "@/modules/share";
 
 interface ChallengeTemplateProps {
   sentences: Chat[];
@@ -35,6 +38,8 @@ export function ChallengeTemplate({
   const [speakSentence, setSpeakSentence] = useState("");
   const [sentences, setSentences] = useState<Chat[]>(sentencesFromChat);
   const [barPercent, setBarPercent] = useState(0);
+  const [errorsSentences, setErrorsSentences] = useState(3);
+  const [openModal, setOpenModal] = useState(false);
 
   const router = useRouter();
 
@@ -91,11 +96,15 @@ export function ChallengeTemplate({
     return checkCorrectSentence(selectedSentence === sentence.english);
   }
 
+  function playAudion(name: string) {
+    new Audio(`/${name}.wav`).play();
+  }
+
   function checkCorrectSentence(isCorrect: boolean) {
     if (isCorrect) {
       setFooterVariant(FooterVariant.SUCCESS);
       setShouldCleanValues(true);
-      new Audio("/success.wav").play();
+      playAudion("success");
 
       const newSentences = sentences.filter((sentenceItem) => {
         return sentenceItem.id !== sentence.id;
@@ -107,9 +116,17 @@ export function ChallengeTemplate({
 
       setSentences(newSentences);
     } else {
-      new Audio("/error.wav").play();
+      playAudion("error");
+
       setFooterVariant(FooterVariant.ERROR);
       setShouldCleanValues(true);
+      const newErrorNumber = errorsSentences - 1;
+      setErrorsSentences(newErrorNumber);
+
+      if (newErrorNumber === 0) {
+        playAudion("game-over");
+        router.push("/");
+      }
     }
   }
 
@@ -192,8 +209,72 @@ export function ChallengeTemplate({
 
   return (
     <div className="min-h-full w-full mx-auto mt-10 h-screen">
-      <div className="max-w-5xl flex-1 mx-auto w-full">
+      <div className="max-w-5xl flex gap-5 items-center flex-1 mx-auto w-full">
+        <button>
+          <Modal
+            isOpen={openModal}
+            onOpenChange={(isOpen) => setOpenModal(isOpen)}
+          >
+            <Modal.Button asChild>
+              <X size={30} />
+            </Modal.Button>
+            <Modal.Content>
+              <div className="flex flex-col items-center w-full gap-4">
+                <Image src="/bird.svg" alt="bird" height={120} width={120} />
+                <span className="text-center font-bold text-xl text-gray-800">
+                  Wait one minute !
+                </span>
+
+                <div className="text-center">
+                  <span className="text-center text-gray-secondary font-medium">
+                    You`ve already picked up the pace... if you leave now,
+                    you`ll lose your progress
+                  </span>
+                </div>
+
+                <Button onClick={() => setOpenModal(false)} variant="blue">
+                  Learn more!
+                </Button>
+                <Button
+                  onClick={() => router.push("/")}
+                  variant="error"
+                  typeButton="outline"
+                >
+                  leave
+                </Button>
+              </div>
+            </Modal.Content>
+          </Modal>
+        </button>
+
         <ProgressBar progress={barPercent} />
+
+        <div className="flex items-center gap-1">
+          <Image
+            data-error={errorsSentences === 0}
+            className="data-[error=true]:opacity-0 data-[error=true]:translate-y-10 transition-all duration-1000 ease-in-out"
+            src="/heart.svg"
+            alt="heart"
+            width={32}
+            height={32}
+          />
+          <Image
+            data-error={errorsSentences <= 1}
+            src="/heart.svg"
+            className="data-[error=true]:opacity-0 data-[error=true]:translate-y-10 transition-all duration-1000 ease-in-out"
+            alt="heart"
+            width={32}
+            height={32}
+          />
+          <Image
+            data-error={errorsSentences <= 2}
+            src="/heart.svg"
+            className="data-[error=true]:opacity-0 data-[error=true]:translate-y-10 transition-all duration-1000 ease-in-out"
+            alt="heart"
+            width={32}
+            height={32}
+          />
+        </div>
       </div>
 
       <div className="max-w-5xl mx-auto mt-36">

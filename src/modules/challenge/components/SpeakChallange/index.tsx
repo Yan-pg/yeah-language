@@ -45,7 +45,7 @@ export function SpeakChallenge({
                 ? "Listening"
                 : speakSentence.length
                 ? speakSentence
-                : "Touch to talk"}
+                : "Click to talk"}
             </span>
           </button>
         </Tag>
