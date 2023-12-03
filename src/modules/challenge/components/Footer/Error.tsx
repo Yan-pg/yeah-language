@@ -21,14 +21,20 @@ export function Error({
 
         <div className="flex flex-col  text-red-dark">
           <div>
-            <span className="text-lg font-bold">Correct solution!</span>
+            <span className="text-sm md:text-lg font-bold">
+              Correct solution!
+            </span>
 
-            <div className="flex items-center gap-1">{correctSolution}</div>
+            <div className="text-sm flex items-center gap-1">
+              {correctSolution}
+            </div>
           </div>
-          <div>
-            <span className="text-lg font-bold">Your answer!</span>
+          <div className="mb-4">
+            <span className="text-sm md:text-lg font-bold">Your answer!</span>
 
-            <div className="flex items-center gap-1">{wrongSolution}</div>
+            <div className="text-sm md:flex items-center gap-1">
+              {wrongSolution}
+            </div>
           </div>
         </div>
       </div>

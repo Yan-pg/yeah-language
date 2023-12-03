@@ -290,7 +290,7 @@ export function ChallengeTemplate({
         </div>
       </div>
 
-      <div className="max-w-5xl mx-auto mt-36 px-4">
+      <div className="max-w-5xl mx-auto mt-10 px-4 mb-14">
         <div
           className={`${challengeType !== ChallengeType.SPEAK ? "hidden" : ""}`}
         >

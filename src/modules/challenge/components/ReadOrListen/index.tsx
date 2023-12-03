@@ -313,7 +313,7 @@ export function ReadOrListen({
               <div>
                 <Tag asChild isBlue>
                   <button
-                    className="text-7xl text-white"
+                    className="text-4xl md:text-7xl  text-white"
                     onClick={() => speak(sentence.english, 0.8)}
                   >
                     <SpeakerSimpleHigh weight="fill" />
@@ -325,10 +325,18 @@ export function ReadOrListen({
                 <Tag asChild isBlue>
                   <button onClick={speakWordByWord}>
                     <Image
+                      className="hidden md:block"
                       src="/turtle.svg"
                       alt="Turle picture"
                       height={42}
                       width={42}
+                    />
+                    <Image
+                      className="md:hidden"
+                      src="/turtle.svg"
+                      alt="Turle picture"
+                      height={20}
+                      width={20}
                     />
                   </button>
                 </Tag>
