@@ -209,7 +209,7 @@ export function ChallengeTemplate({
 
   return (
     <div className="min-h-full w-full mx-auto mt-10 h-screen">
-      <div className="max-w-5xl flex gap-5 items-center flex-1 mx-auto w-full">
+      <div className="max-w-5xl flex md:gap-5 justify-between items-center flex-1 mx-auto w-full px-4">
         <button>
           <Modal
             isOpen={openModal}
@@ -250,34 +250,48 @@ export function ChallengeTemplate({
         <ProgressBar progress={barPercent} />
 
         <div className="flex items-center gap-1">
-          <Image
-            data-error={errorsSentences === 0}
-            className="data-[error=true]:opacity-0 data-[error=true]:translate-y-10 transition-all duration-1000 ease-in-out"
-            src="/heart.svg"
-            alt="heart"
-            width={32}
-            height={32}
-          />
-          <Image
-            data-error={errorsSentences <= 1}
-            src="/heart.svg"
-            className="data-[error=true]:opacity-0 data-[error=true]:translate-y-10 transition-all duration-1000 ease-in-out"
-            alt="heart"
-            width={32}
-            height={32}
-          />
-          <Image
-            data-error={errorsSentences <= 2}
-            src="/heart.svg"
-            className="data-[error=true]:opacity-0 data-[error=true]:translate-y-10 transition-all duration-1000 ease-in-out"
-            alt="heart"
-            width={32}
-            height={32}
-          />
+          <div className="hidden md:block">
+            <Image
+              data-error={errorsSentences === 0}
+              className="data-[error=true]:opacity-0 data-[error=true]:translate-y-10 transition-all duration-1000 ease-in-out"
+              src="/heart.svg"
+              alt="heart"
+              width={32}
+              height={32}
+            />
+            <Image
+              data-error={errorsSentences <= 1}
+              src="/heart.svg"
+              className="data-[error=true]:opacity-0 data-[error=true]:translate-y-10 transition-all duration-1000 ease-in-out"
+              alt="heart"
+              width={32}
+              height={32}
+            />
+            <Image
+              data-error={errorsSentences <= 2}
+              src="/heart.svg"
+              className="data-[error=true]:opacity-0 data-[error=true]:translate-y-10 transition-all duration-1000 ease-in-out"
+              alt="heart"
+              width={32}
+              height={32}
+            />
+          </div>
+
+          <div>
+            <Image
+              data-error={errorsSentences === 0}
+              src="/heart.svg"
+              alt="heart"
+              width={32}
+              height={32}
+            />
+          </div>
+
+          <span className="text-red-dark">{errorsSentences}</span>
         </div>
       </div>
 
-      <div className="max-w-5xl mx-auto mt-36">
+      <div className="max-w-5xl mx-auto mt-36 px-4">
         <div
           className={`${challengeType !== ChallengeType.SPEAK ? "hidden" : ""}`}
         >

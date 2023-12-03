@@ -6,7 +6,7 @@ interface NormalProps {
 
 export function Normal({ checkCorrectSentence }: NormalProps) {
   return (
-    <div className="max-w-5xl w-full mx-auto flex justify-between items-center h-full">
+    <div className="max-w-5xl px-4 w-full mx-auto flex justify-between items-center h-full">
       <div className="w-36">
         <Button variant="secondary">Skip</Button>
       </div>

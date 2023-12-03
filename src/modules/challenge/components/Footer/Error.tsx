@@ -13,7 +13,7 @@ export function Error({
   handleNextSentence,
 }: ErrorProps) {
   return (
-    <div className="max-w-5xl w-full mx-auto flex justify-between items-center h-full">
+    <div className="max-w-5xl px-4 w-full mx-auto flex justify-between items-center h-full">
       <div className="flex items-center gap-3">
         <div className="text-red-dark">
           <XCircle size={80} weight="fill" />

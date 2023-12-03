@@ -7,7 +7,7 @@ interface SuccessProps {
 
 export function Success({ handleNextSentence }: SuccessProps) {
   return (
-    <div className="max-w-5xl w-full mx-auto flex justify-between items-center h-full">
+    <div className="max-w-5xl px-4 w-full mx-auto flex justify-between items-center h-full">
       <div className="flex items-center gap-3">
         <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center text-green-secondary">
           <CheckFat size={32} weight="fill" />
