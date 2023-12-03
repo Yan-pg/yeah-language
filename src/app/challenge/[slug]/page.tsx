@@ -2,8 +2,6 @@ import units from "@/data/units.json";
 import { generateSlug } from "@/tools";
 import { ChallengeTemplate } from "@/modules/challenge/templete";
 
-export const dynamic = "force-dynamic";
-
 interface ChallengePageProps {
   params: {
     slug: string;
