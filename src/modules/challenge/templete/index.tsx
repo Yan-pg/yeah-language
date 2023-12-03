@@ -44,15 +44,16 @@ export function ChallengeTemplate({
 
     setSentence(choiceSentence);
 
-    if (challengeType !== ChallengeType.SPEAK) {
-      textToSpeech(choiceSentence.english, 0.8);
-    }
-
     const percent =
       (100 * (sentencesFromChat.length - sentences.length)) /
       sentencesFromChat.length;
 
     setBarPercent(percent);
+
+    if (challengeType !== ChallengeType.SPEAK) {
+      console.log("entrou");
+      textToSpeech(choiceSentence.english, 0.8);
+    }
   }
 
   function choiceChallengeType() {
@@ -108,6 +109,7 @@ export function ChallengeTemplate({
     } else {
       new Audio("/error.wav").play();
       setFooterVariant(FooterVariant.ERROR);
+      setShouldCleanValues(true);
     }
   }
 
@@ -133,7 +135,7 @@ export function ChallengeTemplate({
     return recognition;
   }
 
-  async function SpeechToText() {
+  async function speechToText() {
     const recognition = getRecognition();
 
     const onSpeechResult = (event: any) => {
@@ -184,8 +186,8 @@ export function ChallengeTemplate({
 
   useEffect(() => {
     window.speechSynthesis;
-    choiceSentence();
     choiceChallengeType();
+    choiceSentence();
   }, []);
 
   return (
@@ -202,7 +204,7 @@ export function ChallengeTemplate({
             isListening={isListening}
             speakSentence={speakSentence}
             sentence={sentence.english}
-            recognizeSpeech={SpeechToText}
+            recognizeSpeech={speechToText}
           />
         </div>
 
@@ -245,6 +247,11 @@ export function ChallengeTemplate({
               challengeType === ChallengeType.SPEAK
                 ? sentence.english
                 : sentence.portuguese
+            }
+            wrongSolution={
+              challengeType === ChallengeType.SPEAK
+                ? speakSentence
+                : selectedSentence
             }
             handleNextSentence={handleNextSentence}
           />
