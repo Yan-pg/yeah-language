@@ -33,7 +33,7 @@ export default function Challenge() {
     })
       .then((response) => response.json())
       .then(({ response }) => setSentences(response));
-  }, [params]);
+  }, []);
 
   return (
     <>{sentences.length > 0 && <ChallengeTemplate sentences={sentences} />}</>
