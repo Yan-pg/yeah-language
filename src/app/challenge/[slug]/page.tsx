@@ -27,7 +27,7 @@ export default function Challenge() {
       (unit) => generateSlug(unit.title) === slug
     );
 
-    fetch(`${process.env.API_HOST}/generate-sentences`, {
+    fetch(`/generate-sentences`, {
       method: "POST",
       body: JSON.stringify({ unit: unit?.contents }),
     })
