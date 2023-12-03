@@ -27,7 +27,7 @@ export default function Challenge() {
       (unit) => generateSlug(unit.title) === slug
     );
 
-    fetch(`/generate-sentences`, {
+    fetch(`https://yeah-language.vercel.app/api/generate-sentences`, {
       method: "POST",
       body: JSON.stringify({ unit: unit?.contents }),
     })
