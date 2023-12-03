@@ -5,6 +5,8 @@ import { generateSlug } from "@/tools";
 // import { ChallengeSentence } from "@/modules/challenge/components/ReadOrListen";
 import { ChallengeTemplate } from "@/modules/challenge/templete";
 
+export const dynamic = "force-dynamic";
+
 interface ChallengePageProps {
   params: {
     slug: string;
