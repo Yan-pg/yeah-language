@@ -8,9 +8,10 @@ const openai = new OpenAI({
 export const runtime = "edge";
 
 export async function POST(req: Request) {
-  const { unit } = await req.json();
+  try {
+    const { unit } = await req.json();
 
-  const prompt = `
+    const prompt = `
     Generate 5 sentences in English on the subject below and return only json array of sentences: 
       ${unit}
 
@@ -26,17 +27,20 @@ export async function POST(req: Request) {
       ]
   `.trim();
 
-  const response = await openai.chat.completions.create({
-    model: "gpt-3.5-turbo",
-    stream: false,
-    messages: [
-      {
-        role: "user",
-        content: prompt,
-      },
-    ],
-  });
-  return NextResponse.json({
-    response: JSON.parse(response.choices[0].message.content || ""),
-  });
+    const response = await openai.chat.completions.create({
+      model: "gpt-3.5-turbo",
+      stream: false,
+      messages: [
+        {
+          role: "user",
+          content: prompt,
+        },
+      ],
+    });
+    return NextResponse.json({
+      response: JSON.parse(response.choices[0].message.content || ""),
+    });
+  } catch (error) {
+    return NextResponse.error();
+  }
 }
