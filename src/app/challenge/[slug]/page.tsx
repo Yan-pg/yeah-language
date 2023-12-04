@@ -7,6 +7,7 @@ import { generateSlug } from "@/tools";
 import { ChallengeTemplate } from "@/modules/challenge/templete";
 import { Chat } from "@/modules/challenge/models";
 import { useParams } from "next/navigation";
+import { Loading } from "@/modules/share";
 
 interface ChallengePageProps {
   params: {
@@ -43,10 +44,19 @@ export default function Challenge() {
 
   return (
     <>
-      {!loading ? (
+      {!loading && sentences.length > 0 ? (
         <ChallengeTemplate sentences={sentences} />
       ) : (
-        <span>loading...</span>
+        <div className="h-screen flex w-full m-auto max-w-[162px] items-center justify-center">
+          <div className="text-center">
+            <Loading />
+
+            <div className="text-center">
+              <h1 className="text-4xl font-bold text-gray-600">Loading...</h1>
+              <span className="mr-5">Wait a minute</span>
+            </div>
+          </div>
+        </div>
       )}
     </>
   );

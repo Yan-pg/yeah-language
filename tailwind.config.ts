@@ -1,5 +1,6 @@
 import type { Config } from "tailwindcss";
 import colors from "tailwindcss/colors";
+import {} from "tailwindcss/";
 
 const config: Config = {
   content: [
@@ -22,11 +23,16 @@ const config: Config = {
           from: { opacity: "0" },
           to: { opacity: "1" },
         },
+        loading: {
+          "0%, 100%": { rotate: "0deg" },
+          "50%": { rotate: "0 4 3 -15deg" },
+        },
       },
       animation: {
         "pulse-click": "animation-pulse 0.5s linear",
         "overlay-show": "overlay-show 0.5s linear",
         "modal-content": "modal-content 0.5s linear",
+        loading: "loading 1s linear infinite",
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
