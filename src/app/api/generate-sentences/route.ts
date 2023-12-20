@@ -12,7 +12,7 @@ export async function POST(req: Request) {
     const { unit } = await req.json();
 
     const prompt = `
-    Generate 5 sentences in English on the subject below and return only json array of sentences: 
+      Generate 5 sentences in English on the subject below and return only json array of sentences: 
       ${unit}
 
       A example: 
@@ -37,9 +37,13 @@ export async function POST(req: Request) {
         },
       ],
     });
-    return NextResponse.json({
-      response: JSON.parse(response.choices[0].message.content || ""),
-    });
+
+    return NextResponse.json(
+      {
+        response: JSON.parse(response.choices[0].message.content || ""),
+      },
+      { status: 200 }
+    );
   } catch (error) {
     return NextResponse.error();
   }

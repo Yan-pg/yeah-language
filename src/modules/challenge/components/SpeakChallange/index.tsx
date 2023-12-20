@@ -27,7 +27,7 @@ export function SpeakChallenge({
                 <SpeakerSimpleHigh size={32} weight="fill" />
               </button>
 
-              <span>{sentence}</span>
+              <span data-cy="cy-sentence">{sentence}</span>
             </div>
           </Tag>
         </div>

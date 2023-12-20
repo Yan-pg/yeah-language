@@ -1,0 +1,39 @@
+{
+  "response": [
+    {
+      "id": "1",
+      "english": "I am a student.",
+      "portuguese": "Eu sou estudante.",
+      "randomEnglish": "She is reading a book.",
+      "randomPortuguese": "Ela está lendo um livro."
+    },
+    {
+      "id": "2",
+      "english": "Are you going to the party?",
+      "portuguese": "Você está indo para a festa?",
+      "randomEnglish": "They are playing football in the park.",
+      "randomPortuguese": "Eles estão jogando futebol no parque."
+    },
+    {
+      "id": "3",
+      "english": "He does his homework every day.",
+      "portuguese": "Ele faz a lição de casa todos os dias.",
+      "randomEnglish": "I am not watching TV right now.",
+      "randomPortuguese": "Eu não estou assistindo TV agora."
+    },
+    {
+      "id": "4",
+      "english": "Does she speak English fluently?",
+      "portuguese": "Ela fala inglês fluentemente?",
+      "randomEnglish": "We are not going to the movie theater tonight.",
+      "randomPortuguese": "Nós não vamos ao cinema hoje à noite."
+    },
+    {
+      "id": "5",
+      "english": "You play the guitar very well.",
+      "portuguese": "Você toca violão muito bem.",
+      "randomEnglish": "The dog barks every morning.",
+      "randomPortuguese": "O cachorro late todas as manhãs."
+    }
+  ]
+}

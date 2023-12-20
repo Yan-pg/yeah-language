@@ -303,7 +303,7 @@ export function ReadOrListen({
                       <SpeakerSimpleHigh size={32} weight="fill" />
                     </button>
 
-                    <span>{sentence.english}</span>
+                    <span data-cy="sentence">{sentence.english}</span>
                   </div>
                 </Tag>
               </div>
@@ -382,6 +382,7 @@ export function ReadOrListen({
                       wordsRefs.current.push(element);
                     }}
                     id={radom.id}
+                    data-cy={radom.word}
                     draggable={true}
                     className="transition-all duration-400 ease-out"
                   >
