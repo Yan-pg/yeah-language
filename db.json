@@ -1,0 +1,23 @@
+{
+  "challenge-complete": [
+    {
+      "last_completed": 3,
+      "id": "yan.amorim@yeahdev.com.br"
+    }
+  ],
+  "offensive": [
+    {
+      "name": "Teste",
+      "offensiveFrom": "2023-12-29",
+      "offensiveTo": "2024-01-25",
+      "status": "done",
+      "id": 1
+    },
+    {
+      "offensiveFrom": "2024-01-02",
+      "offensiveTo": "2024-01-19",
+      "status": "active",
+      "id": 2
+    }
+  ]
+}

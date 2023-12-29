@@ -19,9 +19,17 @@ const config: Config = {
           from: { opacity: "0" },
           to: { opacity: "0.8" },
         },
+        "overlay-hide": {
+          from: { opacity: "0.8" },
+          to: { opacity: "0" },
+        },
         "modal-content": {
           from: { opacity: "0" },
           to: { opacity: "1" },
+        },
+        "modal-content-out": {
+          from: { opacity: "1" },
+          to: { opacity: "0" },
         },
         loading: {
           "0%, 100%": { rotate: "0deg" },
@@ -31,7 +39,9 @@ const config: Config = {
       animation: {
         "pulse-click": "animation-pulse 0.5s linear",
         "overlay-show": "overlay-show 0.5s linear",
+        "overlay-hide": "overlay-hide 0.5s linear",
         "modal-content": "modal-content 0.5s linear",
+        "modal-content-out": "modal-content-out 0.5s linear",
         loading: "loading 1s linear infinite",
       },
       backgroundImage: {

@@ -14,11 +14,13 @@ const contentModal = tv({
   slots: {
     overlay: [
       "bg-black opacity-80",
-      " transition-opacity data-[state=open]:animate-overlay-show",
+      "transition-opacity data-[state=open]:animate-overlay-show",
+      "data-[state=closed]:animate-overlay-hide",
       "fixed inset-0 z-0",
     ],
     content: [
       "data-[state=open]:animate-modal-content",
+      "data-[state=closed]:animate-modal-content-out",
       "fixed max-h-[85vh]",
       "top-[50%] bottom-auto left-[50%] right-auto translate-x-[-50%] translate-y-[-50%]",
       "rounded-2xl bg-white p-6",

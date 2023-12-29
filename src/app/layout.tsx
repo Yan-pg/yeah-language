@@ -1,6 +1,6 @@
-import { Header } from "@/modules/share";
 import "./globals.css";
 import type { Metadata } from "next";
+import { UserProvider } from "@auth0/nextjs-auth0/client";
 import { Inter } from "next/font/google";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -17,9 +17,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-br">
-      <body className={inter.className}>
-        <main>{children}</main>
-      </body>
+      <UserProvider>
+        <body className={inter.className}>
+          <main>{children}</main>
+        </body>
+      </UserProvider>
     </html>
   );
 }

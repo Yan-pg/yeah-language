@@ -11,9 +11,12 @@ import { SpeakChallenge } from "../components/SpeakChallange";
 import { useRouter } from "next/navigation";
 import { X } from "@phosphor-icons/react/dist/ssr";
 import { Button, Modal } from "@/modules/share";
+import axios from "axios";
+import { useUser } from "@auth0/nextjs-auth0/client";
 
 interface ChallengeTemplateProps {
   sentences: Chat[];
+  unitId: number;
 }
 
 export enum ChallengeType {
@@ -24,7 +27,9 @@ export enum ChallengeType {
 
 export function ChallengeTemplate({
   sentences: sentencesFromChat,
+  unitId,
 }: ChallengeTemplateProps) {
+  const { user } = useUser();
   const [sentence, setSentence] = useState<Chat>({} as Chat);
   const [selectedSentence, setSelectedSentence] = useState("");
   const [footerVariant, setFooterVariant] = useState<FooterVariant>(
@@ -56,7 +61,6 @@ export function ChallengeTemplate({
     setBarPercent(percent);
 
     if (challengeType !== ChallengeType.SPEAK) {
-      console.log("entrou");
       textToSpeech(choiceSentence.english, 0.8);
     }
   }
@@ -100,7 +104,7 @@ export function ChallengeTemplate({
     new Audio(`/${name}.wav`).play();
   }
 
-  function checkCorrectSentence(isCorrect: boolean) {
+  async function checkCorrectSentence(isCorrect: boolean) {
     if (isCorrect) {
       setFooterVariant(FooterVariant.SUCCESS);
       setShouldCleanValues(true);
@@ -111,7 +115,18 @@ export function ChallengeTemplate({
       });
 
       if (newSentences.length === 0) {
-        router.push("/");
+        console.log(user);
+
+        if (user) {
+          await axios.put(
+            `http://localhost:3004/challenge-complete/${user.email}`,
+            {
+              last_completed: unitId + 1,
+            }
+          );
+        }
+
+        router.push("/challenges");
       }
 
       setSentences(newSentences);
@@ -236,7 +251,7 @@ export function ChallengeTemplate({
                   Learn more!
                 </Button>
                 <Button
-                  onClick={() => router.push("/")}
+                  onClick={() => router.push("/challenges")}
                   variant="error"
                   typeButton="outline"
                 >

@@ -35,8 +35,6 @@ describe("Challenge", () => {
       const sentenceText = sentence.text();
       const separatedSentence = sentenceText.split(" ");
 
-      console.log({ sentenceText });
-
       // separatedSentence.forEach((word) => {
       //   cy.get(`[data-cy=${word}]`).contains(word).click();
       // });

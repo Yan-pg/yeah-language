@@ -9,24 +9,15 @@ import { Chat } from "@/modules/challenge/models";
 import { useParams } from "next/navigation";
 import { Loading } from "@/modules/share";
 
-interface ChallengePageProps {
-  params: {
-    slug: string;
-  };
-}
-
 export default function Challenge() {
   const params = useParams();
   const [sentences, setSentences] = useState<Chat[]>([]);
   const [loading, setLoading] = useState(true);
+  const { slug } = params;
+
+  const unit = units.content.find((unit) => generateSlug(unit.title) === slug);
 
   useEffect(() => {
-    const { slug } = params;
-
-    const unit = units.content.find(
-      (unit) => generateSlug(unit.title) === slug
-    );
-
     fetch(`${process.env.NEXT_PUBLIC_API_HOST}/generate-sentences`, {
       method: "POST",
       body: JSON.stringify({ unit: unit?.contents }),
@@ -45,7 +36,7 @@ export default function Challenge() {
   return (
     <>
       {!loading && sentences.length > 0 ? (
-        <ChallengeTemplate sentences={sentences} />
+        <ChallengeTemplate sentences={sentences} unitId={unit?.id || 1} />
       ) : (
         <div className="h-screen flex w-full m-auto max-w-[162px] items-center justify-center">
           <div className="text-center">
